@@ -8,6 +8,8 @@ import {
 	FaSignOutAlt,
 	FaListAlt,
 } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
 
 const Sidebar = () => {
 	const navItems = [
@@ -16,8 +18,23 @@ const Sidebar = () => {
 		{ name: "Drivers", path: "/drivers", icon: <FaUserTie /> },
 		{ name: "Expenses", path: "/expenses", icon: <FaMoneyBill /> },
 		{ name: "Reports", path: "/reports", icon: <FaListAlt /> },
-		{ name: "Expense Type", path: "/settings/expense-types", icon: <FaChartBar /> },
+		{
+			name: "Expense Type",
+			path: "/settings/expense-types",
+			icon: <FaChartBar />,
+		},
 	];
+	const { logout } = useAuth();
+
+	const handleLogout = async () => {
+		const res = await api.post("/auth/logout");
+		console.log("Logout response:", res);
+		if (res.status !== 204) {
+			console.error("Logout Failed with status:", res.status);
+			return;
+		}
+		logout();
+	};
 
 	return (
 		<aside className="w-64 bg-white shadow-md hidden md:block">
@@ -41,7 +58,10 @@ const Sidebar = () => {
 				))}
 
 				{/* Logout */}
-				<button className="flex items-center px-4 py-2 text-sm text-red-600 mt-4 hover:bg-red-100 rounded">
+				<button
+					onClick={handleLogout}
+					className="flex items-center px-4 py-2 text-sm text-red-600 mt-4 hover:bg-red-100 rounded cursor-pointer"
+				>
 					<FaSignOutAlt className="mr-3" /> Logout
 				</button>
 			</nav>

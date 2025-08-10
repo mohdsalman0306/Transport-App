@@ -42,37 +42,45 @@ const LoginPage = () => {
 
 				{step === 1 ? (
 					<>
-						<label className="block text-sm mb-2">Mobile Number</label>
-						<input
-							type="text"
-							value={mobile}
-							onChange={(e) => setMobile(e.target.value)}
-							className="w-full border rounded px-3 py-2 mb-4"
-							placeholder="Enter mobile number"
-						/>
-						<button
-							onClick={handleMobileSubmit}
-							className="w-full bg-blue-600 text-white py-2 rounded"
+						<form
+							onSubmit={(e) => {
+								e.preventDefault();
+								handleMobileSubmit();
+							}}
 						>
-							Send OTP
-						</button>
+							<label className="block text-sm mb-2">Mobile Number</label>
+							<input
+								type="text"
+								value={mobile}
+								onChange={(e) => setMobile(e.target.value)}
+								className="w-full border rounded px-3 py-2 mb-4"
+								placeholder="Enter mobile number"
+							/>
+							<button className="w-full bg-blue-600 text-white py-2 rounded">
+								Send OTP
+							</button>
+						</form>
 					</>
 				) : (
 					<>
-						<label className="block text-sm mb-2">Enter OTP</label>
-						<input
-							type="text"
-							value={otp}
-							onChange={(e) => setOtp(e.target.value)}
-							className="w-full border rounded px-3 py-2 mb-4"
-							placeholder="Enter 1234"
-						/>
-						<button
-							onClick={handleOtpSubmit}
-							className="w-full bg-green-600 text-white py-2 rounded"
+						<form
+							onSubmit={(e) => {
+								e.preventDefault();
+								handleOtpSubmit();
+							}}
 						>
-							Login
-						</button>
+							<label className="block text-sm mb-2">Enter OTP</label>
+							<input
+								type="text"
+								value={otp}
+								onChange={(e) => setOtp(e.target.value)}
+								className="w-full border rounded px-3 py-2 mb-4"
+								placeholder="Enter 1234"
+							/>
+							<button className="w-full bg-green-600 text-white py-2 rounded">
+								Login
+							</button>
+						</form>
 					</>
 				)}
 			</div>
