@@ -3,7 +3,7 @@ import {
 	getExpenseTypes,
 	addExpenseType,
 	deleteExpenseType,
-} from "../services/expenseTypeService";
+} from "../services/ExpenseTypeService";
 import { FaTrash, FaPlus } from "react-icons/fa";
 
 const ExpenseTypeManagerPage = () => {
