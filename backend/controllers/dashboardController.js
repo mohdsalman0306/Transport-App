@@ -49,12 +49,12 @@ exports.getDashboardSummary = async (req, res) => {
 
 		const todayExpenses = await Expense.find({
 			user: userId,
-			createdAt: { $gte: startOfToday, $lte: endOfToday },
+			date: { $gte: startOfToday, $lte: endOfToday },
 		});
 
 		const thisMonthExpenses = await Expense.find({
 			user: userId,
-			createdAt: {
+			date: {
 				$gte: moment().startOf("month").toDate(),
 				$lte: moment().endOf("month").toDate(),
 			},
@@ -88,7 +88,7 @@ exports.getDailyProfit = async (req, res) => {
 
 			const expenses = await Expense.find({
 				user: userId,
-				createdAt: { $gte: start, $lte: end },
+				date: { $gte: start, $lte: end },
 			});
 
 			const profit = calculateTotalProfit(expenses);
@@ -114,7 +114,7 @@ exports.getExpenseBreakdown = async (req, res) => {
 
 		const expenses = await Expense.find({
 			user: userId,
-			createdAt: { $gte: start, $lte: end },
+			date: { $gte: start, $lte: end },
 		});
 
 		// Aggregate expenses by type from expenseItems
@@ -178,7 +178,7 @@ exports.getMonthlyProfit = async (req, res) => {
 
 			const expenses = await Expense.find({
 				user: userId,
-				createdAt: { $gte: start, $lte: end },
+				date: { $gte: start, $lte: end },
 			});
 
 			const profit = calculateTotalProfit(expenses);
@@ -211,7 +211,7 @@ exports.getMonthlyProfitSummary = async (req, res) => {
 
 			const expenses = await Expense.find({
 				user: userId,
-				createdAt: { $gte: monthStart, $lte: monthEnd },
+				date: { $gte: monthStart, $lte: monthEnd },
 			});
 
 			const profit = calculateTotalProfit(expenses);
@@ -258,7 +258,7 @@ exports.getExpenseTypesSummary = async (req, res) => {
 
 		const expenses = await Expense.find({
 			user: userId,
-			createdAt: { $gte: startDate, $lte: endDate },
+			date: { $gte: startDate, $lte: endDate },
 		});
 
 		const summary = {
