@@ -29,25 +29,45 @@ const expenseSchema = new mongoose.Schema(
 			type: Number,
 			required: true,
 		},
+		// Changed from individual fields to flexible expenseItems array
+		expenseItems: [
+			{
+				expenseType: {
+					type: String,
+					required: true,
+				},
+				amount: {
+					type: Number,
+					required: true,
+					default: 0,
+				},
+				description: {
+					type: String,
+					default: "",
+				},
+			},
+		],
+		profit: Number,
+		remark: String,
+
+		// Keep legacy fields for backward compatibility (optional)
+		// You can remove these after data migration
 		royalityFee: { type: Number, default: 0 },
 		highwayToll: { type: Number, default: 0 },
 		maintinance: { type: Number, default: 0 },
 		driverFood: { type: Number, default: 0 },
 		mics: Number,
-		profit: Number,
-		remark: String,
 	},
 	{ timestamps: true }
 );
 
 expenseSchema.pre("save", function (next) {
-	const totalExpenses =
-		(this.royalityFee || 0) +
-		(this.highwayToll || 0) +
-		(this.maintinance || 0) +
-		(this.driverFood || 0) +
-		(this.misc || 0) +
-		(this.sandBuyingPrice || 0);
+	// Calculate total from expenseItems array
+	const expenseItemsTotal = this.expenseItems.reduce((sum, item) => {
+		return sum + (item.amount || 0);
+	}, 0);
+
+	const totalExpenses = expenseItemsTotal + (this.sandBuyingPrice || 0);
 	this.profit = this.sandSellingPrice - totalExpenses;
 	next();
 });

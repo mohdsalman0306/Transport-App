@@ -2,14 +2,27 @@ const Expense = require("../models/Expense");
 
 const createExpense = async (req, res) => {
 	try {
-		console.log("Creating expense with data:", req);
+		if (req.body.expenseItems) {
+			const validExpenseItems = req.body.expenseItems.filter(
+				(item) =>
+					item.expenseType &&
+					item.expenseType.trim() !== "" &&
+					item.amount !== undefined &&
+					item.amount !== null &&
+					item.amount !== ""
+			);
+			req.body.expenseItems = validExpenseItems;
+		}
+
 		const expense = new Expense({
 			...req.body,
 			user: req.user._id,
 		});
+
 		await expense.save();
 		res.status(201).json({ message: "Expense recorded successfully", expense });
 	} catch (error) {
+		console.error("Error creating expense:", error);
 		res
 			.status(500)
 			.json({ message: "Failed to record expense", error: error.message });
@@ -71,10 +84,24 @@ const updateExpense = async (req, res) => {
 		if (!expense) {
 			return res.status(404).json({ message: "No Expense found" });
 		}
-		Object.assign(expense, req.body); //need to understand this line
+		if (req.body.expenseItems) {
+			const validExpenseItems = req.body.expenseItems.filter(
+				(item) =>
+					item.expenseType &&
+					item.expenseType.trim() !== "" &&
+					item.amount !== undefined &&
+					item.amount !== null &&
+					item.amount !== ""
+			);
+			req.body.expenseItems = validExpenseItems;
+		}
+
+		// Object.assign merges req.body properties into expense document
+		Object.assign(expense, req.body);
 		await expense.save();
 		res.status(200).json({ message: "Expense updated successfully", expense });
 	} catch (error) {
+		console.error("Error updating expense:", error);
 		res
 			.status(500)
 			.json({ message: "Failed to update expense", error: error.message });
