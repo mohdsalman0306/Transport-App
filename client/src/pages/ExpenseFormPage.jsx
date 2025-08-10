@@ -6,8 +6,8 @@ import {
 	updateExpense,
 } from "../services/ExpenseService";
 import { getExpenseTypes } from "../services/ExpenseTypeService";
-import { getVehicles } from "../services/VehicleService";
-import { getDrivers } from "../services/DriverService";
+import { getVehicles } from "../services/vehicleService";
+import { getDrivers } from "../services/driverService";
 import { toast } from "react-toastify";
 import { FaPlus, FaTrash } from "react-icons/fa";
 
